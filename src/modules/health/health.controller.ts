@@ -1,6 +1,6 @@
 // Core
 import { Controller, Get, HttpStatus } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 // Services
 import { HealthService } from './health.service';
@@ -13,6 +13,9 @@ import { ResponseMessage } from '../../@types-space/classes/response-message.cla
 export class HealthController {
   constructor(private readonly healthService: HealthService) {}
 
+  @ApiOperation({
+    summary: 'Проверка работоспособности api',
+  })
   @ApiOkResponse({
     status: HttpStatus.OK,
     type: ResponseMessage,
