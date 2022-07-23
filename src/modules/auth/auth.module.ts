@@ -13,10 +13,11 @@ import { TokensService } from './services/tokens.service';
 
 // Controllers
 import { AuthController } from './auth.controller';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [UserModule, CryptographyModule, ConfigModule, JwtModule],
-  providers: [AuthService, TokensService],
+  providers: [AuthService, TokensService, JwtStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}
