@@ -13,11 +13,14 @@ import { TokensService } from './services/tokens.service';
 
 // Controllers
 import { AuthController } from './auth.controller';
+
+// Strategies
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { JwtRefreshTokenStrategy } from './strategies/jwt-refresh.strategy';
 
 @Module({
   imports: [UserModule, CryptographyModule, ConfigModule, JwtModule],
-  providers: [AuthService, TokensService, JwtStrategy],
+  providers: [AuthService, TokensService, JwtStrategy, JwtRefreshTokenStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}

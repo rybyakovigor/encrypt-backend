@@ -1,5 +1,5 @@
 // Core
-import { Body, Controller, HttpCode, HttpStatus, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiResponse, ApiTags, OmitType } from '@nestjs/swagger';
 import { Request } from 'express';
 
@@ -12,6 +12,12 @@ import { LoginDto } from './dto/login.dto';
 
 // Models
 import { UserModel } from '../user/user.model';
+
+// Guards
+import JwtRefreshGuard from './guards/jwt-refresh.guard';
+
+// Interfaces
+import { RequestWithUser } from './interfaces/request-with-user.interface';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -40,5 +46,18 @@ export class AuthController {
 
     delete loginInfo.cookie;
     return loginInfo;
+  }
+
+  @UseGuards(JwtRefreshGuard)
+  @Get('refresh')
+  @ApiOperation({
+    summary: 'Обновление токенов',
+  })
+  async refresh(@Req() request: RequestWithUser) {
+    const email = request.user.email;
+    const { cookie, access_token } = await this.authService.refreshTokens(email);
+
+    request.res.setHeader('Set-Cookie', cookie);
+    return { access_token };
   }
 }

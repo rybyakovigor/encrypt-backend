@@ -11,6 +11,9 @@ import { TokensService } from './tokens.service';
 import { RegisterDto } from '../dto/register.dto';
 import { LoginDto } from '../dto/login.dto';
 
+// Constants
+import { COOKIE_PATH } from '../auth.constants';
+
 @Injectable()
 export class AuthService {
   private readonly cookie_expiration_time: string;
@@ -54,6 +57,19 @@ export class AuthService {
     };
   }
 
+  async refreshTokens(userEmail: string) {
+    const user = await this.userService.findByEmail(userEmail);
+
+    const { _id, email } = user;
+
+    const tokens = await this.tokensService.generateTokens({ _id, email });
+    const cookie = this.getCookieWithJwtRefreshToken(tokens.refreshToken, this.cookie_expiration_time);
+    return {
+      access_token: tokens.accessToken,
+      cookie,
+    };
+  }
+
   private async getAuthenticatedUser(body: LoginDto) {
     try {
       const user = await this.userService.findByEmail(body.email);
@@ -72,6 +88,6 @@ export class AuthService {
   }
 
   private getCookieWithJwtRefreshToken(token: string, cookie_expiration_time: string) {
-    return `Refresh=${token}; HttpOnly; Max-Age=${cookie_expiration_time}`;
+    return `Refresh=${token}; HttpOnly; Path=${COOKIE_PATH}; Max-Age=${cookie_expiration_time}`;
   }
 }
