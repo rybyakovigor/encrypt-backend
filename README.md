@@ -22,10 +22,13 @@ yarn start:dev
 ```bash
 yarn build
 ```
-### Locally preview production build
+### Run in production mode
 ```bash
 yarn start:prod
 ```
+
+## Documentation
+The project uses swagger for documentation. Available on `host/docs`
 
 ## Code style
 The project uses eslint, prettier
