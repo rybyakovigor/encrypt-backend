@@ -1,0 +1,42 @@
+version: "3.7"
+
+services:
+  encrypt_backend:
+    build: .
+    container_name: encrypt-backend
+    depends_on:
+      - encrypt-backend-bd
+    environment:
+      - NODE_ENV=production
+      - MONGODB_USERNAME=$MONGODB_USERNAME
+      - MONGODB_PASSWORD=$MONGODB_PASSWORD
+      - MONGODB_DATABASE_NAME=$MONGODB_DATABASE_NAME
+      - MONGODB_HOST=$MONGODB_HOST
+      - MONGODB_PORT=$MONGODB_PORT
+      - JWT_ACCESS_SECRET=$JWT_ACCESS_SECRET
+      - JWT_ACCESS_EXPIRATION_TIME=$JWT_ACCESS_EXPIRATION_TIME
+      - JWT_REFRESH_SECRET=$JWT_REFRESH_SECRET
+      - JWT_REFRESH_EXPIRATION_TIME=$JWT_REFRESH_EXPIRATION_TIME
+      - COOKIE_EXPIRATION_TIME=$COOKIE_EXPIRATION_TIME
+
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+  encrypt-backend-bd:
+    image: mongo:4.4.10
+    container_name: encrypt-backend-bd
+    environment:
+      - NODE_ENV=production
+      - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD
+      - MONGO_INITDB_DATABASE=$MONGODB_DATABASE_NAME
+    volumes:
+      - encrypt-backend-bd:/data/db
+    ports:
+      - "$MONGODB_PORT:27017"
+    restart: always
+    command: --wiredTigerCacheSizeGB 1.5
+
+volumes:
+  encrypt-backend-bd:

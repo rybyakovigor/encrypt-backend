@@ -64,3 +64,11 @@ chore: run tests on travis ci
 fix(server): send cors headers (#43)
 feat(blog): add comment section
 ```
+
+## Docker
+The container is started in production mode with the command:
+```bash
+docker-compose up -d --build
+```
+Up containers – app, mongo.
+Container name – `encrypt-backend`, port – `3000`
