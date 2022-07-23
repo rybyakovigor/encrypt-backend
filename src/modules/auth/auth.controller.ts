@@ -1,6 +1,6 @@
 // Core
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiResponse, ApiTags, OmitType } from '@nestjs/swagger';
+import { ApiCookieAuth, ApiOkResponse, ApiOperation, ApiResponse, ApiTags, OmitType } from '@nestjs/swagger';
 import { Request } from 'express';
 
 // Services
@@ -18,6 +18,7 @@ import JwtRefreshGuard from './guards/jwt-refresh.guard';
 
 // Interfaces
 import { RequestWithUser } from './interfaces/request-with-user.interface';
+import { RefreshResponse } from './interfaces/refresh-response.interface';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -49,9 +50,14 @@ export class AuthController {
   }
 
   @UseGuards(JwtRefreshGuard)
+  @ApiCookieAuth()
   @Get('refresh')
   @ApiOperation({
     summary: 'Обновление токенов',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: RefreshResponse,
   })
   async refresh(@Req() request: RequestWithUser) {
     const email = request.user.email;

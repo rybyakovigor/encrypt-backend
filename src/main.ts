@@ -18,7 +18,12 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
 
-  const config = new DocumentBuilder().setTitle('Encrypt API').setVersion('0.1').build();
+  const config = new DocumentBuilder()
+    .setTitle('Encrypt API')
+    .setVersion('0.1')
+    .addBearerAuth()
+    .addCookieAuth('Refresh')
+    .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
