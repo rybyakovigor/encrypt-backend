@@ -8,13 +8,11 @@ module.exports = {
     '@typescript-eslint/eslint-plugin',
     'import',
     'sonarjs',
-    '@darraghor/nestjs-typed'
   ],
   extends: [
     'plugin:@typescript-eslint/recommended',
     'airbnb-typescript/base',
     "plugin:sonarjs/recommended",
-    'plugin:@darraghor/nestjs-typed/recommended',
     'plugin:prettier/recommended'
   ],
   root: true,
@@ -32,6 +30,7 @@ module.exports = {
     'no-console': ["error", { allow: ["warn", "error"] }],
     'import/no-extraneous-dependencies': 'off',
     'prettier/prettier': 'off',
+    '@typescript-eslint/naming-convention': 'off'
   },
 };
 
