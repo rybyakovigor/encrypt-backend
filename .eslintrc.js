@@ -32,6 +32,7 @@ module.exports = {
     'no-console': ["error", { allow: ["warn", "error"] }],
     'import/no-extraneous-dependencies': 'off',
     'prettier/prettier': 'off',
+    '@typescript-eslint/naming-convention': 'off'
   },
 };
 
